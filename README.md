@@ -8,12 +8,17 @@ This is the  team repo for the capstone project of Udacity's Self-Driving Car En
 * Gokberk Ozden (ozdengokberkk@gmail.com)
 
 ### Result check:
-Smoothly follows waypoints in the simulator. 
-Respects the target top speed set for the waypoints' twist.twist.linear.x in waypoint_loader.py. Works by testing with different values (from 20 to 60) for kph velocity parameter in /ros/src/waypoint_loader/launch/waypoint_loader.launch.
-Stops at traffic lights when needed. However, due to the camera issue with the workspace and the time limit, the traffic lights information are read directly from  '/vehicle/traffic_lights', instead of the classfier.
-Stops and restarts PID controllers depending on the state of /vehicle/dbw_enabled.
-Publishes throttle, steering, and brake commands at 50hz.
-Launches correctly using the launch files provided in the capstone repo.
+- Car smoothly follows waypoints in the simulator. 
+
+- Respects the target top speed set for the waypoints' twist.twist.linear.x in waypoint_loader.py. Works by testing with different values (from 20 to 60) for kph velocity parameter in /ros/src/waypoint_loader/launch/waypoint_loader.launch.
+
+- Stops at traffic lights when needed. However, due to the camera issue with the workspace and the time limit, the traffic lights information are read directly from  '/vehicle/traffic_lights', instead of the classfier.
+
+- Stops and restarts PID controllers depending on the state of /vehicle/dbw_enabled.
+
+- Publishes throttle, steering, and brake commands at 50hz.
+
+- Launches correctly using the launch files provided in the capstone repo.
 
 ### DBW(Drive-by-wire) node
 
