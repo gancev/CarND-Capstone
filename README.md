@@ -15,7 +15,7 @@ Stops and restarts PID controllers depending on the state of /vehicle/dbw_enable
 Publishes throttle, steering, and brake commands at 50hz.
 Launches correctly using the launch files provided in the capstone repo.
 
-## DBW(Drive-by-wire) node
+### DBW(Drive-by-wire) node
 
 The DBW node takes the /twist_cmd topic as input and uses various controllers to provide appropriate throttle, brake, and steering commands. These commands can then be published to the following topics:
 
@@ -26,7 +26,7 @@ The DBW node takes the /twist_cmd topic as input and uses various controllers to
 They are published at 50Hz as required. Since a safety driver may take control of the car during testing, to avoid the PID controller mistakenly accumulating error, the DBW status is checked by by subscribing to /vehicle/dbw_enabled.
 
 The commands above are calculated respectivelly:
-# steering:
+#### steering:
 The steering is calculated by yaw_controller, which takes the desired linear x velocity and angular z velocity of the twist command from waypoint follower, and the current linear x velocity as input:
 steering_angle = arctan(wheel_base / turning_radius) * steer_ratio
 turning_radius = current_linear_velocity / target_angular_velocity
@@ -34,10 +34,10 @@ target_angular_velocity = desired_angular_velocity * (current_linear_velocity / 
 
 The current linear velocity is filtered by a low pass-by filter to avoid noises.
 
-# throttle:
+#### throttle:
 A PID controller is set for the throttle control. It takes in the difference between the desired linear velocity and the current linear velocity, as well as the sample time, and outputs the throttle(0. to 1.0).
 
-# brake:
+#### brake:
 While the acceleration depends on the throttle, the deceleration of the car relys on the brake. When the car needs to slow down, which means the desired velocity is less than the current velocity:
 - throttle is set to 0
 - brake = a_deceleration * vehicle_mass * wheel_radios
