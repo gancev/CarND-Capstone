@@ -23,19 +23,18 @@ This is the  team repo for the capstone project of Udacity's Self-Driving Car En
 ### DBW(Drive-by-wire) node
 
 The DBW node takes the /twist_cmd topic as input and uses various controllers to provide appropriate throttle, brake, and steering commands. These commands can then be published to the following topics:
-
-/vehicle/steering_cmd
-/vehicle/throttle_cmd
-/vehicle/brake_cmd
+- /vehicle/steering_cmd
+- /vehicle/throttle_cmd
+- /vehicle/brake_cmd
 
 They are published at 50Hz as required. Since a safety driver may take control of the car during testing, to avoid the PID controller mistakenly accumulating error, the DBW status is checked by by subscribing to /vehicle/dbw_enabled.
 
 The commands above are calculated respectivelly:
 #### steering:
 The steering is calculated by yaw_controller, which takes the desired linear x velocity and angular z velocity of the twist command from waypoint follower, and the current linear x velocity as input:
-steering_angle = arctan(wheel_base / turning_radius) * steer_ratio
-turning_radius = current_linear_velocity / target_angular_velocity
-target_angular_velocity = desired_angular_velocity * (current_linear_velocity / target_linear_velocity)
+- steering_angle = arctan(wheel_base / turning_radius) * steer_ratio
+- turning_radius = current_linear_velocity / target_angular_velocity
+- target_angular_velocity = desired_angular_velocity * (current_linear_velocity / target_linear_velocity)
 
 The current linear velocity is filtered by a low pass-by filter to avoid noises.
 
