@@ -7,6 +7,44 @@ This is the  team repo for the capstone project of Udacity's Self-Driving Car En
 * Yi Yang (satine.yy@gmail.com)
 * Gokberk Ozden (ozdengokberkk@gmail.com)
 
+### Result check:
+Smoothly follows waypoints in the simulator. 
+Respects the target top speed set for the waypoints' twist.twist.linear.x in waypoint_loader.py. Works by testing with different values (from 20 to 60) for kph velocity parameter in /ros/src/waypoint_loader/launch/waypoint_loader.launch.
+Stops at traffic lights when needed. However, due to the camera issue with the workspace and the time limit, the traffic lights information are read directly from  '/vehicle/traffic_lights', instead of the classfier.
+Stops and restarts PID controllers depending on the state of /vehicle/dbw_enabled.
+Publishes throttle, steering, and brake commands at 50hz.
+Launches correctly using the launch files provided in the capstone repo.
+
+## DBW(Drive-by-wire) node
+
+The DBW node takes the /twist_cmd topic as input and uses various controllers to provide appropriate throttle, brake, and steering commands. These commands can then be published to the following topics:
+
+/vehicle/steering_cmd
+/vehicle/throttle_cmd
+/vehicle/brake_cmd
+
+They are published at 50Hz as required. Since a safety driver may take control of the car during testing, to avoid the PID controller mistakenly accumulating error, the DBW status is checked by by subscribing to /vehicle/dbw_enabled.
+
+The commands above are calculated respectivelly:
+# steering:
+The steering is calculated by yaw_controller, which takes the desired linear x velocity and angular z velocity of the twist command from waypoint follower, and the current linear x velocity as input:
+steering_angle = arctan(wheel_base / turning_radius) * steer_ratio
+turning_radius = current_linear_velocity / target_angular_velocity
+target_angular_velocity = desired_angular_velocity * (current_linear_velocity / target_linear_velocity)
+
+The current linear velocity is filtered by a low pass-by filter to avoid noises.
+
+# throttle:
+A PID controller is set for the throttle control. It takes in the difference between the desired linear velocity and the current linear velocity, as well as the sample time, and outputs the throttle(0. to 1.0).
+
+# brake:
+While the acceleration depends on the throttle, the deceleration of the car relys on the brake. When the car needs to slow down, which means the desired velocity is less than the current velocity:
+- throttle is set to 0
+- brake = a_deceleration * vehicle_mass * wheel_radios
+
+To fix the car wanding issue as mentioned in the walkthrough, the following_flag check is desactivated in waypoint_follower/src/pure_pursuit_core.cpp PurePursuit::calcTwist(), so that the waypoint follower updates the waypoint angular velocity all the time.
+
+
 
 Please use **one** of the two installation options, either native **or** docker installation.
 
