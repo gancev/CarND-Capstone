@@ -20,6 +20,19 @@ This is the  team repo for the capstone project of Udacity's Self-Driving Car En
 
 - Launches correctly using the launch files provided in the capstone repo.
 
+### Waypoint Updater Node
+
+Waypoint Updater Node purpose is to publish a fixed number of waypoints ahead of the vehicle with the correct target velocities, depending on traffic lights. 
+Waypoint Updater Node is subscribed to following topics:
+- /base_waypoints : list of waypoints for the track.
+- /current_pose : car current position.
+- /traffic_waypoint : list of all detected trafic lights.
+
+and publishing waypoints to topic :
+- /final_waypoints : list of waypoints car should follow with the desired speed of the car in each waypoint. Number of waypoints we publish is defined in LOOKAHEAD_WPS currently set to 200. When traffic light is detected with stop signal we start decelerating car continuosly through the waypoints.
+
+During testing with the simulator on the workspace enviroment we expirienced performance issues when update rate for /final_waypoints were set to 50 Hz, car reacted with huge latency not following the waypoints, and steers at wrong time. Since the waypoint follower is at 30Hz, so the rate here can be set to 30Hz or even less when waypoint updater ; currently set to 25Hz.
+        
 ### DBW(Drive-by-wire) node
 
 The DBW node takes the /twist_cmd topic as input and uses various controllers to provide appropriate throttle, brake, and steering commands. These commands can then be published to the following topics:
