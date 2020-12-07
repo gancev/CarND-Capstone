@@ -48,10 +48,24 @@ While the acceleration depends on the throttle, the deceleration of the car rely
 
 To fix the car wanding issue as mentioned in the walkthrough, the following_flag check is desactivated in waypoint_follower/src/pure_pursuit_core.cpp PurePursuit::calcTwist(), so that the waypoint follower updates the waypoint angular velocity all the time.
 
+### Traffic Light Detection Node
 
+Important Note: Obstacle Detection is not implemented.
+
+The node has following input signals:
+	1. current_pose : Vehicle position information
+ 2. base_waypoints : Waypoint the vehicle should follow
+ 3. vehicle/trafficlights: Coordinates of traffic lights
+ 4. image_color: Image stream from vehicle's camera to determine color of the traffic light ahead
+    
+The node returns two outputs:
+	1. Closest waypoint for stopping at upcoming detected light
+ 2. ID of traffic light color
+
+The nodes gets vehicle position and light positions, iterates through them to find the closest stop line ahead of the vehicle.
+Once, the closest light is found node gets light state information. (For simulation state information is directly taken from TLDetector class)
 
 Please use **one** of the two installation options, either native **or** docker installation.
-
 ### Native Installation
 
 * Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. [Ubuntu downloads can be found here](https://www.ubuntu.com/download/desktop).
