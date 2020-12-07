@@ -55,8 +55,6 @@ class WaypointUpdater(object):
                                  # probably due to the performance of the workspace: it works so slow that the car only reacts to huge latency
         while not rospy.is_shutdown():
             if self.pose and self.base_waypoints:
-                # Get closet waypoint
-                #closest_waypoint_idx = self.get_closest_waypoint_idx()
                 self.publish_waypoints()
             rate.sleep()
             
